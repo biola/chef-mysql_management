@@ -7,6 +7,6 @@ long_description 'Manages MySQL databases, users, and backups using data bags an
 version          '3.0.0'
 
 depends          'chef-vault', '~> 1.1.2'
-depends          'cron', '~> 1.4.0'
+depends          'cron', '= 1.4.0'
 depends          'database', '~> 2.3.0'
 depends          'mysql', '~> 5.5.2'
