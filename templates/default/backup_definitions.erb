@@ -1,0 +1,6 @@
+# Backup definitions for MySQL databases
+# This file is managed by Chef; any changes made to this file will be lost
+# db_name:schedule:rotation_period
+<% @backup_definitions.each do |d| -%>
+<%= d['db_name'] %>:<%= d['schedule'] %>:<%= d['rotation_period'] %>
+<% end -%>

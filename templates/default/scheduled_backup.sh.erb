@@ -1,0 +1,31 @@
+#!/bin/bash
+# This script is managed by Chef; any changes made to this script will be lost
+BACKUP_USER=<%= @backup_user %>
+BACKUP_PASSWORD=<%= @backup_password %>
+BACKUP_DIR=<%= node['mysql']['backup']['backup_location'] %>
+DATE=$(date +\%m\%d\%y_\%H\%M)
+TIMESTAMP="_$DATE.sql.gz"
+
+# Read backup definitions from file and loop through them
+COUNTER=0
+while IFS=: read DB_NAME SCHEDULE ROTATION_PERIOD
+do
+  if [ "$SCHEDULE" == "$1" ]
+  then
+    echo "Backing up $DB_NAME..."
+    mysqldump --single-transaction --force --user=$BACKUP_USER --password=$BACKUP_PASSWORD $DB_NAME | gzip > $BACKUP_DIR/$DB_NAME/$DB_NAME$TIMESTAMP
+    chmod 600 $BACKUP_DIR/$DB_NAME/$DB_NAME$TIMESTAMP
+    let COUNTER=COUNTER+1
+
+    # Delete old backups
+    let ROTATION_PERIOD=ROTATION_PERIOD-1
+    find $BACKUP_DIR/$DB_NAME/*.sql.gz -type f -mtime +$ROTATION_PERIOD -exec rm {} \;
+  fi
+done < $BACKUP_DIR/backup_definitions
+
+if [ $COUNTER -gt 0 ]
+then
+  echo "$COUNTER databases were backed up successfully."
+else
+  echo "No databases were backed up. Please check Chef configuration."
+fi

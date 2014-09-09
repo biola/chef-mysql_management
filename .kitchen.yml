@@ -1,0 +1,20 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-12.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[mysql::server]
+      - recipe[mysql_management::default]
+      - recipe[mysql_management::backups]
+    attributes:
+      dev_mode: true
+      mysql:
+        server_root_password: "notarealpassword"

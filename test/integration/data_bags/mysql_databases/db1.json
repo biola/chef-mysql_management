@@ -1,0 +1,6 @@
+{
+  "id": "db1",
+  "encoding": "utf8",
+  "backup_schedule": "daily",
+  "backup_rotation_period": "7"
+}
