@@ -19,7 +19,7 @@
 
 # Install dependencies
 include_recipe "chef-vault"
-include_recipe "database::mysql"
+include_recipe "mysql_management::mysql_gem"
 
 # Retrieve authentication information from the vault containing MySQL user configuration
 root_password = chef_vault_item(node['mysql']['management']['users_vault'], "root")['password']
