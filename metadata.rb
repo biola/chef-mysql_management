@@ -4,7 +4,7 @@ maintainer_email 'jared.king@biola.edu'
 license          'Apache 2.0'
 description      'Manages MySQL databases, users, and backups'
 long_description 'Manages MySQL databases, users, and backups using data bags and the database cookbook'
-version          '3.0.0'
+version          '3.0.1'
 
 depends          'chef-vault', '~> 1.1.2'
 depends          'cron', '= 1.4.0'
