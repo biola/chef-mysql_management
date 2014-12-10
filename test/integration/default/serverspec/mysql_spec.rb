@@ -1,13 +1,7 @@
 require 'serverspec'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
-
-RSpec.configure do |c|
-  c.before :all do
-    c.path = '/sbin:/usr/sbin'
-  end
-end
+set :backend, :exec
+set :path, '/sbin:/usr/sbin:$PATH'
 
 describe "mysql" do
   it "is listening on port 3306" do
@@ -24,7 +18,7 @@ describe "MySQL database and user created" do
     describe command(
       "echo \"SHOW DATABASES LIKE 'db1'\" | mysql --user=root --password=notarealpassword"
     ) do
-      it { should return_stdout /db1/ }
+      its(:stdout) { should match /db1/ }
     end
   end
 
@@ -32,7 +26,7 @@ describe "MySQL database and user created" do
     describe command(
       "echo \"SELECT User, Host FROM mysql.user\" | mysql --user=root --password=notarealpassword"
     ) do
-      it { should return_stdout /mysqldump_user\tlocalhost/ }
+      its(:stdout) { should match /mysqldump_user\tlocalhost/ }
     end
   end
 end

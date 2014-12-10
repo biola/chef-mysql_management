@@ -19,8 +19,14 @@
 
 # Install the MySQL client package if needed
 unless File.exist?('/usr/bin/mysql')
-  include_recipe "mysql::client"
-end  
+  package "mysql-client-5.5" do
+    action :nothing
+  end.run_action(:install)
+
+  package "libmysqlclient-dev" do
+    action :nothing
+  end.run_action(:install)
+end
 
 # Install the mysql gem
 chef_gem 'mysql'

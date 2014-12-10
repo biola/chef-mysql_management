@@ -28,36 +28,44 @@ root_password = chef_vault_item(node['mysql']['management']['users_vault'], "roo
 mysql_connection_info = { :host => "localhost", :username => 'root', :password => root_password }
 
 # Loop through all of the items in the data bag containing MySQL database configuration
-mysql_databases = data_bag(node['mysql']['management']['databases_databag'])
-mysql_databases.each do |db_name|
-  database = data_bag_item(node['mysql']['management']['databases_databag'], db_name)
-  # Create the database if it doesn't exist
-  mysql_database db_name do
-    connection mysql_connection_info
-    if database['encoding']
-      encoding database['encoding']
+if Chef::DataBag.list.key?(node['mysql']['management']['databases_databag'])
+  mysql_databases = data_bag(node['mysql']['management']['databases_databag'])
+  mysql_databases.each do |db_name|
+    database = data_bag_item(node['mysql']['management']['databases_databag'], db_name)
+    # Create the database if it doesn't exist
+    mysql_database db_name do
+      connection mysql_connection_info
+      if database['encoding']
+        encoding database['encoding']
+      end
+      action :create
     end
-    action :create
   end
+else
+  Chef::Log.info('Data bag for MySQL databases not found. Skipping...')
 end
 
 # Loop through all of the items in the vault containing MySQL user configuration
-mysql_users = data_bag(node['mysql']['management']['users_vault'])
-mysql_users.each do |user_name|
-  user = chef_vault_item(node['mysql']['management']['users_vault'], user_name)
-  # Grant permissions on each of the databases configured
-  if user['privileges']
-    user['privileges'].each do |db_name, db_privileges|
-      user['hosts'].each do |h|
-        mysql_database_user user_name do
-          connection mysql_connection_info
-          host h
-          database_name db_name
-          password user['password']
-          privileges db_privileges
-          action :grant
+if Chef::DataBag.list.key?(node['mysql']['management']['users_vault'])
+  mysql_users = data_bag(node['mysql']['management']['users_vault'])
+  mysql_users.each do |user_name|
+    user = chef_vault_item(node['mysql']['management']['users_vault'], user_name)
+    # Grant permissions on each of the databases configured
+    if user['privileges']
+      user['privileges'].each do |db_name, db_privileges|
+        user['hosts'].each do |h|
+          mysql_database_user user_name do
+            connection mysql_connection_info
+            host h
+            database_name db_name
+            password user['password']
+            privileges db_privileges
+            action :grant
+          end
         end
       end
     end
   end
+else
+  Chef::Log.info('Data bag for MySQL users not found. Skipping...')
 end
