@@ -4,7 +4,7 @@ maintainer_email 'jared.king@biola.edu'
 license          'Apache 2.0'
 description      'Manages MySQL databases, users, and backups'
 long_description 'Manages MySQL databases, users, and backups using data bags and the database cookbook'
-source_url       'https://github.com/biola/chef-mysql_management'  
+source_url       'https://github.com/biola/chef-mysql_management'
 issues_url       'https://github.com/biola/chef-mysql_management/issues'
 version          '3.1.1'
 
