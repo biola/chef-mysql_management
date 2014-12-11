@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe 'build-essential::default'
+
 # Install the MySQL client package if needed
 unless File.exist?('/usr/bin/mysql')
   package "mysql-client-5.5" do

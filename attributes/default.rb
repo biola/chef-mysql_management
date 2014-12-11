@@ -17,5 +17,8 @@
 # limitations under the License.
 #
 
+# Install the build-essential package at compile time
+default['build-essential']['compile_time'] = true
+
 default['mysql']['management']['databases_databag'] = "mysql_databases"
 default['mysql']['management']['users_vault'] = "mysql_users"
