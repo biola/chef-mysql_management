@@ -2,7 +2,7 @@
 # Cookbook Name:: mysql_management
 # Recipe:: default
 #
-# Copyright 2014, Biola University
+# Copyright 2015, Biola University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,12 @@
 
 # Install dependencies
 include_recipe "chef-vault"
-include_recipe "mysql_management::mysql_gem"
 
 # Retrieve authentication information from the vault containing MySQL user configuration
 root_password = chef_vault_item(node['mysql']['management']['users_vault'], "root")['password']
 
 # Create a hash of MySQL authentication info
-mysql_connection_info = { :host => "localhost", :username => 'root', :password => root_password }
+mysql_connection_info = { :host => "127.0.0.1", :username => 'root', :password => root_password }
 
 # Loop through all of the items in the data bag containing MySQL database configuration
 if Chef::DataBag.list.key?(node['mysql']['management']['databases_databag'])
@@ -35,9 +34,8 @@ if Chef::DataBag.list.key?(node['mysql']['management']['databases_databag'])
     # Create the database if it doesn't exist
     mysql_database db_name do
       connection mysql_connection_info
-      if database['encoding']
-        encoding database['encoding']
-      end
+      collation database['collation'] if database['collation']
+      encoding database['encoding'] if database['encoding']
       action :create
     end
   end

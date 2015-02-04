@@ -90,11 +90,12 @@ Tested on Ubuntu 12.04, but should work on any modern Ubuntu distribution.
 
 Include `mysql_management` in your node's `run_list`. Ensure that a chef-vault item for the root user has been created.
 
-Create a `mysql_databases` data bag in Chef to hold database configuration. In the below example, `encoding`, `backup_schedule`, and `backup_rotation_period` are optional. A database can be created simply with an "id" and other options can be added later if needed.
+Create a `mysql_databases` data bag in Chef to hold database configuration. In the below example, `collation`, `encoding`, `backup_schedule`, and `backup_rotation_period` are optional. A database can be created simply with an "id" and other options can be added later if needed.
 
 ```json
 {
   "id": "database_name",
+  "collation": "utf8_general_ci",
   "encoding": "utf8",
   "backup_schedule": "daily",
   "backup_rotation_period": "7"
