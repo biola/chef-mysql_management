@@ -10,10 +10,10 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
     run_list:
-      - recipe[apt]
+      - recipe[apt::default]
   - name: ubuntu-12.04
     run_list:
-      - recipe[apt]
+      - recipe[apt::default]
 
 suites:
   - name: default

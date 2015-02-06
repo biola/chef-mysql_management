@@ -16,7 +16,7 @@ end
 describe "MySQL database and user created" do
   describe "'db1' database exists" do
     describe command(
-      "echo \"SHOW DATABASES LIKE 'db1'\" | mysql --user=root --password=notarealpassword"
+      "echo \"SHOW DATABASES LIKE 'db1'\" | mysql --host=127.0.0.1 --user=root --password=ilikerandompasswords"
     ) do
       its(:stdout) { should match /db1/ }
     end
@@ -24,7 +24,7 @@ describe "MySQL database and user created" do
 
   describe "'mysqldump_user' is created for localhost" do
     describe command(
-      "echo \"SELECT User, Host FROM mysql.user\" | mysql --user=root --password=notarealpassword"
+      "echo \"SELECT User, Host FROM mysql.user\" | mysql --host=127.0.0.1 --user=root --password=ilikerandompasswords"
     ) do
       its(:stdout) { should match /mysqldump_user\tlocalhost/ }
     end

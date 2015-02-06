@@ -2,7 +2,7 @@
 # Cookbook Name:: mysql_management
 # Attributes:: default
 #
-# Copyright 2014, Biola University
+# Copyright 2015, Biola University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-# Install the build-essential package at compile time
-default['build-essential']['compile_time'] = true
-
+default['mysql']['management']['install_mysql2_gem'] = true
 default['mysql']['management']['databases_databag'] = "mysql_databases"
 default['mysql']['management']['users_vault'] = "mysql_users"

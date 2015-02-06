@@ -20,6 +20,13 @@
 # Install dependencies
 include_recipe "chef-vault"
 
+# Install the mysql2 gem (a dependency for the resources in the database cookbook)
+if node['mysql']['management']['install_mysql2_gem']
+  mysql2_chef_gem 'default' do
+    action :install
+  end
+end
+
 # Retrieve authentication information from the vault containing MySQL user configuration
 root_password = chef_vault_item(node['mysql']['management']['users_vault'], "root")['password']
 
