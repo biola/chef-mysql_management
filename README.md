@@ -112,7 +112,7 @@ Database user configuration must be stored with chef-vault. Items in the `mysql_
   ],
   "password": "notarealpassword",
   "privileges": {
-    "db1": [
+    "db1.*": [
       "select",
       "insert"
     ],

@@ -1,0 +1,12 @@
+{
+  "id": "mysqldump_user",
+  "hosts": [
+    "localhost"
+  ],
+  "password": "notarealpassword",
+  "privileges": {
+    "db1.*": [
+      "select"
+    ]
+  }
+}

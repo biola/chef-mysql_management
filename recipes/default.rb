@@ -58,11 +58,13 @@ if Chef::DataBag.list.key?(node['mysql']['management']['users_vault'])
     # Grant permissions on each of the databases configured
     if user['privileges']
       user['privileges'].each do |db_name, db_privileges|
+        pieces = db_name.split('.')
         user['hosts'].each do |h|
           mysql_database_user user_name do
             connection mysql_connection_info
             host h
-            database_name db_name
+            database_name pieces[0]
+            table pieces[1] || '*'
             password user['password']
             privileges db_privileges
             action :grant
